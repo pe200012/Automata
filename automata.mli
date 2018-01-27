@@ -1,21 +1,17 @@
-type ('stat,'arg) t
-
-type ('stat,'arg) node =
+type ('stat,'arg,'result) t
+type ('stat,'arg,'result) node =
   {
-    index : int;
-    nodetype : nodetype;
-    action : ('arg -> 'stat);
-    trans_fun : ('stat -> int * 'arg);
-    comment : string
+    nodetype : ('stat,'arg,'result) nodetype;
+    comment   : string
   }
-and nodetype =
-  | Inital
-  | Node
-  | Final
+and ('stat,'arg,'result) nodetype =
+  | Inital of ('arg -> 'stat) * ('stat -> int * 'arg)
+  | Node   of ('arg -> 'stat) * ('stat -> int * 'arg)
+  | Final  of ('arg -> 'stat) * ('stat -> 'result)
 
 exception Unknown_node
 exception Illegal_action of string
 exception Exn_pair of exn * exn
 
-val create : (unit -> int * 'arg) -> ('stat,'arg) node list -> ('stat,'arg) t
-val run : (_,_) t -> unit
+val create : (int * ('stat,'arg,'result) node) list -> ('stat,'arg,'result) t
+val run : (unit -> int * 'arg) -> ?debug:bool -> (_,'arg,_) t -> unit
