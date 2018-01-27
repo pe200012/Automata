@@ -14,4 +14,5 @@ exception Illegal_action of string
 exception Exn_pair of exn * exn
 
 val create : (int * ('stat,'arg,'result) node) list -> ('stat,'arg,'result) t
-val run : (unit -> int * 'arg) -> ?debug:bool -> (_,'arg,_) t -> unit
+val run : (unit -> int * 'arg) -> ?debug:bool -> (_,'arg,'result) t -> 'result
+
