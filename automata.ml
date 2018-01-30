@@ -1,46 +1,35 @@
 open Core_kernel
 
-type ('stat,'arg,'result) t = (int, ('stat,'arg,'result) node) Hashtbl.t
-and ('stat,'arg,'result) node =
+type ('arg,'result) t = (int, ('arg,'result) node) Hashtbl.t
+and ('arg,'result) node =
   {
-    nodetype : ('stat,'arg,'result) nodetype;
+    nodetype : ('arg,'result) nodetype;
     comment   : string
   }
-and ('stat,'arg,'result) nodetype =
-  | Inital of ('arg -> 'stat) * ('stat -> int * 'arg)
-  | Node   of ('arg -> 'stat) * ('stat -> int * 'arg)
-  | Final  of ('arg -> 'stat) * ('stat -> 'result)
+and ('arg,'result) nodetype =
+  | Inital of ('arg -> int * 'arg)
+  | Node   of ('arg -> int * 'arg)
+  | Final  of ('arg -> 'result)
 
 exception Unknown_node
 exception Illegal_action of string
 exception Exn_pair of exn * exn
 
-let create (ns:(int*(_,_,_)node)list) =
+let create (ns:(int*(_,_)node)list) : (_,_) t =
   let ta = Int.Table.create () in
   List.iter ns (fun (i,n) -> Hashtbl.add_exn ~key:i ~data:n ta);
   ta
 
-let run init_f ?(debug=false) t =
-  let rec loop n arg =
+let run (init_f:unit->int*_) ?(debug=false) (t:(_,_) t) =
+  let rec loop n a =
     match n.nodetype with
-    | Final (action, result) ->
-      (if debug = true then Printf.printf "[DEBUG]Final Node %s\n" n.comment);
-      result (action arg)
-    | Inital (action, trans) | Node (action, trans) ->
-      let i, a = try trans (action arg) with e -> raise (Exn_pair (Illegal_action "Terminated on non-final node",e)) in
-      match Hashtbl.find t i with
-      | None -> raise Unknown_node
-      | Some n ->
-        (if debug = true then Printf.printf "[DEBUG]Node %d:%s\n" i n.comment);
-        loop n a
+    | Final f -> f a
+    | Inital f | Node f ->
+      trans (try f a with e -> raise (Exn_pair (Illegal_action "Terminated on non-final node",e))) 
+  and trans (i,a) =
+    match Hashtbl.find t i with
+    | None -> raise Unknown_node
+    | Some n -> loop n a
   in
-  let i, a = init_f () in
-  match Hashtbl.find t i with
-  | None -> raise Unknown_node
-  | Some n ->
-    match n.nodetype with
-    | Inital (_, _) -> 
-      (if debug = true then Printf.printf "[DEBUG]Start from inital node %d:%s\n" i n.comment);
-      loop n a
-    | _ -> raise (Illegal_action "Start from a non-inital node")
+  trans (init_f ())
 
