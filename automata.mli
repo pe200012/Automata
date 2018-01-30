@@ -17,7 +17,10 @@ exception Exn_pair of exn * exn
 (** [create ns] will create a automachine with type of ns's nodes' type *)
 val create : (int * ('a, 'b) node) list -> ('a, 'b) t
 
-(** [run t] will eventually return a result with type of t's result type. 
+(** [[run t]] will eventually return a result with type of t's result type. 
+
+@ param debug default = false. Will print some infos if set.
+
 Will raise exception if the node except {b Final} raise a exception *)
 val run : (unit -> int * 'a) -> ?debug:bool -> ('a, 'b) t -> 'b
 
