@@ -1,10 +1,12 @@
 open Core_kernel
 
+(** 自动机和节点类型 *)
 type ('arg,'result) t = (int, ('arg,'result) node) Hashtbl.t
+(** 使用哈希表来组织自动机，相对列表提高查询效率 *)
 and ('arg,'result) node =
   {
     nodetype : ('arg,'result) nodetype;
-    comment   : string
+    comment   : string 
   }
 and ('arg,'result) nodetype =
   | Inital of ('arg -> int * 'arg)
