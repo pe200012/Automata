@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="next" href="Automata.A2.html">
+<link rel="Up" href="Automata.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Index of module types" rel=Appendix href="index_module_types.html">
+<link title="Automata" rel="Chapter" href="Automata.html"><title>Automata.A1</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="Automata.html" title="Automata">Up</a>
+&nbsp;<a class="post" href="Automata.A2.html" title="Automata.A2">Next</a>
+</div>
+<h1>Module <a href="type_Automata.A1.html">Automata.A1</a></h1>
+
+<pre><span id="MODULEA1"><span class="keyword">module</span> A1</span>: <code class="code">sig</code> <a href="Automata.A1.html">..</a> <code class="code">end</code></pre><hr width="100%">
+
+<pre><code><span id="TYPEnode"><span class="keyword">type</span> <code class="type">('stat, 'arg, 'result)</code> node</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTnode.f">f</span>&nbsp;: <code class="type">[ `Final of 'arg -> 'result | `Node of 'arg -> 'stat * 'arg ]</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTnode.comment">comment</span>&nbsp;: <code class="type">string</code>;</code></td>
+<td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
+<div class="info-desc">
+<p>For debug purpose</p>
+</div>
+</div>
+</td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
+</tr></table>
+}
+
+
+
+<pre><span class="keyword">include</span> <a href="Automata.S.html">Automata.S</a></pre>
+
+<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">(unit -> 'a * 'b) -> ?debug:bool -> ('a, 'b, 'c) t -> 'c</code></pre></body></html>
