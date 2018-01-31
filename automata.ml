@@ -1,8 +1,6 @@
 open Core_kernel
 
-module Automata = 
-struct
-
+module Automata = struct
   exception Unknown_node
   exception Illegal_action of string
   exception Exn_pair of exn * exn
@@ -69,55 +67,54 @@ struct
         | Some n -> loop n a
       in
       trans (init_f ())
-  end
 
-module A2 : sig
-    type ('stat,'arg,'result) node =
-      {
-        f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
-        comment : string (** For debug purpose *)
-      }
-    include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node
-    val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
-  end = struct
-    type ('stat,'arg,'result) t = ('stat, ('stat,'arg,'result) node) Hashtbl.Poly.t
-    and ('stat,'arg,'result) node =
-      {
-        f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
-        comment : string (** For debug purpose *)
-      }
+    module A2 : sig
+      type ('stat,'arg,'result) node =
+        {
+          f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
+          comment : string (** For debug purpose *)
+        }
+      include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node
+      val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
+    end = struct
+      type ('stat,'arg,'result) t = ('stat, ('stat,'arg,'result) node) Hashtbl.Poly.t
+      and ('stat,'arg,'result) node =
+        {
+          f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
+          comment : string (** For debug purpose *)
+        }
       let create (ns:('a*(_,_,_)node)list) =
-      let t = Hashtbl.Poly.create () in
-      List.iter ~f:(fun (key,data) ->
-          match Hashtbl.add t ~key ~data with
-          | `Duplicate -> raise (Illegal_action "Duplicated node")
-          | `Ok -> ()) ns;
-      t
+        let t = Hashtbl.Poly.create () in
+        List.iter ~f:(fun (key,data) ->
+            match Hashtbl.add t ~key ~data with
+            | `Duplicate -> raise (Illegal_action "Duplicated node")
+            | `Ok -> ()) ns;
+        t
 
-    let add t n =
-      let s, n = n in
-      match Hashtbl.add t ~key:s ~data:n with
-      | `Duplicate -> raise (Illegal_action "Duplicated node")
-      | `Ok -> ()
+      let add t n =
+        let s, n = n in
+        match Hashtbl.add t ~key:s ~data:n with
+        | `Duplicate -> raise (Illegal_action "Duplicated node")
+        | `Ok -> ()
 
-    let replace t n = let key, data = n in Hashtbl.set t ~key ~data
+      let replace t n = let key, data = n in Hashtbl.set t ~key ~data
 
-    let remove = Hashtbl.Poly.remove
+      let remove = Hashtbl.Poly.remove
 
-    let clear = Hashtbl.Poly.clear
+      let clear = Hashtbl.Poly.clear
 
-    let run (init_f:unit -> 'a * 'b) ?(debug=false) (t:('a,'b,'c)t) : 'c =
-      let rec loop n a =
-        match (try n.f a with e -> raise (Exn_pair (Illegal_action "Terminated on non-final node",e))) with
-        | `Result r -> r
-        | `State s -> trans s
-      and trans (s,a) =
-        match Hashtbl.Poly.find t s with
-        | None -> raise Unknown_node
-        | Some n -> loop n a
-      in
-      trans (init_f ())
+      let run (init_f:unit -> 'a * 'b) ?(debug=false) (t:('a,'b,'c)t) : 'c =
+        let rec loop n a =
+          match (try n.f a with e -> raise (Exn_pair (Illegal_action "Terminated on non-final node",e))) with
+          | `Result r -> r
+          | `State s -> trans s
+        and trans (s,a) =
+          match Hashtbl.Poly.find t s with
+          | None -> raise Unknown_node
+          | Some n -> loop n a
+        in
+        trans (init_f ())
 
-end
-
+    end
+  end
 end
