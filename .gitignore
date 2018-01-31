@@ -2,4 +2,3 @@
 .merlin
 *.swp
 _build/*
-doc/*

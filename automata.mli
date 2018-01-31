@@ -5,6 +5,7 @@ module Automata : sig
   exception Exn_pair of exn * exn
 
   module type S = sig
+    (** The interface of automachine *)
 
     (** type of automachine of node *)
     type ('stat,'arg,'result) t
