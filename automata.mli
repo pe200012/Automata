@@ -39,4 +39,14 @@ module Automata : sig
     val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
   end
 
+  module A2 : sig
+    type ('stat,'arg,'result) node =
+      {
+        f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
+        comment : string (** For debug purpose *)
+      }
+    include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node
+    val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
+  end
+
 end
