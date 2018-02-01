@@ -22,19 +22,19 @@
 
 <pre><span id="MODULEA2"><span class="keyword">module</span> A2</span>: <code class="code">sig</code> <a href="Automata.A2.html">..</a> <code class="code">end</code></pre><hr width="100%">
 
-<pre><code><span id="TYPEnode"><span class="keyword">type</span> <code class="type">('stat, 'arg, 'result)</code> node</span> = {</code></pre><table class="typetable">
+<pre><code><span id="TYPEnode'"><span class="keyword">type</span> <code class="type">('stat, 'arg, 'result)</code> node'</span> = {</code></pre><table class="typetable">
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode.f">f</span>&nbsp;: <code class="type">'arg -> [ `Result of 'result | `State of 'stat * 'arg ]</code>;</code></td>
+<code><span id="TYPEELTnode'.f">f</span>&nbsp;: <code class="type">'arg -> [ `Result of 'result | `State of 'stat * 'arg ]</code>;</code></td>
 
 </tr>
 <tr>
 <td align="left" valign="top" >
 <code>&nbsp;&nbsp;</code></td>
 <td align="left" valign="top" >
-<code><span id="TYPEELTnode.comment">comment</span>&nbsp;: <code class="type">string</code>;</code></td>
+<code><span id="TYPEELTnode'.comment">comment</span>&nbsp;: <code class="type">string</code>;</code></td>
 <td class="typefieldcomment" align="left" valign="top" ><code>(*</code></td><td class="typefieldcomment" align="left" valign="top" ><div class="info ">
 <div class="info-desc">
 <p>For debug purpose</p>
@@ -47,5 +47,4 @@
 
 
 <pre><span class="keyword">include</span> <a href="Automata.S.html">Automata.S</a></pre>
-
-<pre><span id="VALrun"><span class="keyword">val</span> run</span> : <code class="type">(unit -> 'a * 'b) -> ?debug:bool -> ('a, 'b, 'c) t -> 'c</code></pre></body></html>
+</body></html>

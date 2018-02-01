@@ -26,6 +26,12 @@
 
 <pre><span id="EXCEPTIONExn_pair"><span class="keyword">exception</span> Exn_pair</span> <span class="keyword">of</span> <code class="type">exn * exn</code></pre>
 
-<pre><span id="MODULETYPES"><span class="keyword">module type</span> <a href="Automata.S.html">S</a></span> = <code class="code">sig</code> <a href="Automata.S.html">..</a> <code class="code">end</code></pre>
+<pre><span id="MODULETYPES"><span class="keyword">module type</span> <a href="Automata.S.html">S</a></span> = <code class="code">sig</code> <a href="Automata.S.html">..</a> <code class="code">end</code></pre><div class="info">
+<p>The interface of automachine</p>
+
+</div>
+
+<pre><span id="MODULETYPEAutoType"><span class="keyword">module type</span> <a href="Automata.AutoType.html">AutoType</a></span> = <code class="code">sig</code> <a href="Automata.AutoType.html">..</a> <code class="code">end</code></pre>
+<pre><span id="MODULEMake"><span class="keyword">module</span> <a href="Automata.Make.html">Make</a></span>: <div class="sig_block"><code class="code">functor (</code><code class="code">A</code><code class="code"> : </code><code class="type"><a href="Automata.AutoType.html">AutoType</a></code><code class="code">) -&gt; </code><code class="type"><a href="Automata.S.html">S</a></code><code class="type"> </code></div></pre>
 <pre><span id="MODULEA1"><span class="keyword">module</span> <a href="Automata.A1.html">A1</a></span>: <code class="code">sig</code> <a href="Automata.A1.html">..</a> <code class="code">end</code></pre>
 <pre><span id="MODULEA2"><span class="keyword">module</span> <a href="Automata.A2.html">A2</a></span>: <code class="code">sig</code> <a href="Automata.A2.html">..</a> <code class="code">end</code></pre></body></html>
