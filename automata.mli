@@ -3,8 +3,8 @@ exception Unknown_node
 exception Illegal_action of string
 exception Exn_pair of exn * exn
 
-(** The interface of automachine *)
 module type S = sig
+  (** The interface of automachine *)
 
   (** type of automachine of node *)
   type ('stat,'arg,'result) t
@@ -28,29 +28,23 @@ module type S = sig
   val run     : (unit -> 'a * 'b) -> ('a,'b,'c) t -> 'c
 end
 
-module type AutoType = sig
-  type ('stat,'arg,'result) t = ('stat,('stat,'arg,'result) node) Core_kernel.Hashtbl.Poly.t
-  and ('stat,'arg,'result) node
-  val run     : (unit -> 'a * 'b) -> ('a,'b,'c) t -> 'c
-end
-
-module Make (A:AutoType) : S
-
-module A1 : sig 
-  type ('stat,'arg,'result) node' =
+module A1 : sig
+  type ('stat,'arg,'result) node =
     {
       f : [ `Node of 'arg -> 'stat * 'arg | `Final of 'arg -> 'result];
-      comment   : string
+      comment : string (** For debug purpose *)
     }
-  include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node'
+  include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node
+  val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
 end
 
-module A2 : sig 
-  type ('stat,'arg,'result) node' =
+module A2 : sig
+  type ('stat,'arg,'result) node =
     {
       f : 'arg -> [`State of 'stat * 'arg | `Result of 'result];
       comment : string (** For debug purpose *)
     }
-  include S with type ('stat,'arg,'result) node = ('stat,'arg,'result) node'
-end 
+  include S with type ('stat,'arg,'result) node := ('stat,'arg,'result) node
+  val run  : (unit -> 'a * 'b) -> ?debug:bool -> ('a,'b,'c) t -> 'c
+end
 
