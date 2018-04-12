@@ -67,6 +67,8 @@ end = struct
     in
     trans (init_f ())
 
+end
+
   module A2 : sig
     type ('stat,'arg,'result) node =
       {
@@ -114,5 +116,4 @@ end = struct
       in
       trans (init_f ())
 
-  end
 end
